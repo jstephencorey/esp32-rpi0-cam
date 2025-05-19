@@ -7,6 +7,7 @@ import pytz
 
 load_dotenv()
 
+SECRET_KEY = os.getenv("SECRET_KEY")
 IMMICH_API_KEY = os.getenv("IMMICH_API_KEY")
 IMMICH_UPLOAD_URL = os.getenv("IMMICH_UPLOAD_URL")
 
@@ -64,3 +65,8 @@ def receive_images():
         return {"status": "error", "message": str(e)}, 500
     finally:
         shutil.rmtree(temp_dir)
+
+if __name__ == "__main__":
+    app.run(debug=True, 
+            host='0.0.0.0'
+            )
