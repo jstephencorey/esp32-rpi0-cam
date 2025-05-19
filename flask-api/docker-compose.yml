@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  flask-uploader:
+    build: .
+    ports:
+      - "5001:5000"
+    env_file:
+      - .env
+    volumes:
+      - /zstorage/tmp  # or any writable temp space
