@@ -4,6 +4,7 @@ import requests
 from dotenv import load_dotenv
 from datetime import datetime
 import pytz
+import uuid
 
 load_dotenv()
 
@@ -55,6 +56,7 @@ def receive_images():
             timestamp = get_iso8601_zoned_timestamp()
             data = {
                 'deviceId': device_id,
+                'deviceAssetId': f"{device_id}_{str(uuid.uuid4())}", 
                 'fileCreatedAt': timestamp,
                 'fileModifiedAt': timestamp
             }
