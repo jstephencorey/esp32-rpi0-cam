@@ -68,7 +68,7 @@ def receive_images():
             "ffmpeg", "-y",
             "-framerate", "10",
             "-i", os.path.join(temp_dir, "frame_%03d.jpg"),
-            "-c:v", "libx264",
+            "-c:v", "libx265",
             "-pix_fmt", "yuv420p",
             video_path
         ], check=True)
