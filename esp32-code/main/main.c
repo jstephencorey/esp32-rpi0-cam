@@ -5,8 +5,10 @@
 #include "esp_log.h"
 #include "esp_timer.h"
 #include "camera.h"
-
-
+#include "uploader.h"
+#include "wifi.h"
+#include "freertos/FreeRTOS.h"
+#include "freertos/task.h"
 
 static const char *TAG = "MAIN";
 
@@ -31,7 +33,17 @@ void app_main(void) {
         ESP_LOGE(TAG, "Failed to create directory");
     }
 
-    char filepath[64];
-    snprintf(filepath, sizeof(filepath), "%s/photo1.jpg", dir_name);
-    capture_and_save_photo(filepath);
+    for (int i = 0; i<10; i++) {
+        char filepath[64];
+        snprintf(filepath, sizeof(filepath), "%s/PHOTO%d.JPG", dir_name, i);
+        capture_and_save_photo(filepath);
+        vTaskDelay(pdMS_TO_TICKS(100));
+    }
+
+    if (app_wifi_init_sta() == ESP_OK) {
+        upload_photos_from_dir(dir_name);
+        app_wifi_deinit();
+    } else {
+        ESP_LOGE("MAIN", "Wi-Fi setup failed.");
+    }
 }
