@@ -1,5 +1,6 @@
 */.env
 */.vscode/
+*.vscode/
 /esp32-code/build
 /esp32-code/sdkconfig
 /esp32-code/sketch/
