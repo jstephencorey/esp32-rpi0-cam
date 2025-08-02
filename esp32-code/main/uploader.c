@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include "secrets.h"
 
-#define TAG "IMMICH"
+#define TAG "UPLOADER"
 #define BOUNDARY "Esp32CamBoundary"
 #define MAX_IMAGES 64
 
@@ -75,6 +75,8 @@ esp_err_t upload_photos_from_dir(const char *dir_path) {
         ESP_LOGW(TAG, "No .JPG files found.");
         return ESP_OK;
     }
+    ESP_LOGI(TAG, "Num Photos found and sending: %d", count);
+
 
     // Calculate Content-Length
     size_t total_size = 0;

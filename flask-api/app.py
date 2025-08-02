@@ -45,6 +45,7 @@ def receive_images():
 
     try:
         # Expect deviceId in form data
+        logging.info("beginning to process the request")
         device_id = request.form.get("deviceId")
         if not device_id:
             logging.warning("Missing deviceId in form data")
