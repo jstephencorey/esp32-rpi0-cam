@@ -8,22 +8,28 @@ Make a .env file in the flask-api folder with IMMICH_API_KEY, IMMICH_UPLOAD_URL,
 
 ## To run:
 ### Esp32:
-Open a shell for ESP-IDF 5.4
-Plug in the esp32 camera to the computer
-Navigate to the folder (in my case, `S:\Dev\esp32-rpi0-cam\esp32-code`)
-run `idf.py set-target esp32`
-run `idf.py build`?
+ - Open a shell for ESP-IDF 5.4
+ - Plug in the esp32 camera to the computer
+ - Navigate to the folder (in my case, `S:\Dev\esp32-rpi0-cam\esp32-code`)
+ - run `idf.py fullclean`
+ - run `idf.py set-target esp32`
+ - run `idf.py build`
+ - then run `python -m esptool --chip esp32 -b 460800 --before default_reset --after hard_reset write_flash --flash_mode dio --flash_size 2MB --flash_freq 40m 0x1000 build\bootloader\bootloader.bin 0x8000 build\partition_table\partition-table.bin 0x10000 build\esp32-surveillence-cam.bin`
+ - Monitor the logs with 
 
 ### To set up the RPI zero 2 w:
 #### Setup the OS:
-Download Raspberry Pi Imager
-Choose OS:Raspberry Pi OS Lite (32-bit)
-Choose storage: your SD card
-Before flashing, click gear icon (Advanced Settings):
-    Set hostname (e.g., pi-flask.local)
-    Enable SSH
-    Set username/password
-    Configure Wi-Fi
-Flash the SD card and insert into the Pi Zero 2 W
+ - Download Raspberry Pi Imager
+ - Choose OS:Raspberry Pi OS Lite (32-bit)
+ - Choose storage: your SD card
+ - Before flashing, click gear icon (Advanced Settings):
+     - Set hostname (e.g., pi-flask.local)
+     - Enable SSH
+     - Set username/password
+     - Configure Wi-Fi
+ - Flash the SD card and insert into the Pi Zero 2 W
 
 SSH into the rpi
+run the following two commands:
+`sudo apt update && sudo apt upgrade -y`
+`sudo apt install python3 python3-pip ffmpeg git -y`
