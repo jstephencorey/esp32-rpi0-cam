@@ -33,7 +33,7 @@ void app_main(void) {
         ESP_LOGE(TAG, "Failed to create directory");
     }
 
-    for (int i = 0; i<100; i++) {
+    for (int i = 0; i<10; i++) {
         char filepath[64];
         snprintf(filepath, sizeof(filepath), "%s/PHOTO%d.JPG", dir_name, i);
         capture_and_save_photo(filepath);

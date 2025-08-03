@@ -11,6 +11,8 @@ load_dotenv()
 
 # Flask app setup
 app = Flask(__name__)
+app.config['MAX_CONTENT_LENGTH'] = 100 * 1024 * 1024  # increase if needed
+
 
 # Setup logging
 logging.basicConfig(
@@ -25,7 +27,7 @@ logging.basicConfig(
 # Load secrets from .env
 SECRET_KEY = os.getenv("SECRET_KEY")
 IMMICH_API_KEY = os.getenv("IMMICH_API_KEY")
-IMMICH_UPLOAD_URL = os.getenv("IMMICH_UPLOAD_URL")
+IMMICH_UPLOAD_URL = str(os.getenv("IMMICH_UPLOAD_URL"))
 
 def get_iso8601_zoned_timestamp():
     tz = pytz.timezone(os.getenv("TIMEZONE", "America/Denver"))  # fallback to Mountain Time
@@ -65,14 +67,17 @@ def receive_images():
         video_path = os.path.join(temp_dir, "output.mp4")
         logging.info(f"Generating video at: {video_path}")
 
-        subprocess.run([
+        result = subprocess.run([
             "ffmpeg", "-y",
             "-framerate", "10",
             "-i", os.path.join(temp_dir, "frame_%03d.jpg"),
             "-c:v", "libx265",
             "-pix_fmt", "yuv420p",
             video_path
-        ], check=True)
+        ], check=True, capture_output=True, text=True)
+
+        if result.returncode != 0:
+            logging.error(f"ffmpeg failed: {result.stderr}")
 
         logging.info("Video generation complete")
 
@@ -99,6 +104,7 @@ def receive_images():
         return {"status": "error", "message": str(e)}, 500
 
     finally:
+        logging.info("Reached the finally chunk of processing the images/video")
         shutil.rmtree(temp_dir)
         logging.info(f"Cleaned up temp directory: {temp_dir}")
 

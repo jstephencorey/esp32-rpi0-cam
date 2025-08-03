@@ -111,12 +111,14 @@ esp_err_t upload_photos_from_dir(const char *dir_path) {
 
     total_size += strlen("--" BOUNDARY "--\r\n");
 
+    ESP_LOGI(TAG, "total size of sent data: %d", total_size);
+
     // Setup HTTP
     esp_http_client_config_t config = {
         .url = UPLOAD_URL,
         .method = HTTP_METHOD_POST,
         .event_handler = _http_event_handler,
-        .timeout_ms = 20000,
+        .timeout_ms = 60000,
     };
 
     esp_http_client_handle_t client = esp_http_client_init(&config);
@@ -154,6 +156,13 @@ esp_err_t upload_photos_from_dir(const char *dir_path) {
 
     // Finish
     int status = esp_http_client_fetch_headers(client);
+    char buf[128];
+    int read_len = esp_http_client_read(client, buf, sizeof(buf) - 1);
+    if (read_len > 0) {
+        buf[read_len] = '\0';
+        ESP_LOGI(TAG, "Response: %s", buf);
+    }
+
     if (status >= 0) {
         int code = esp_http_client_get_status_code(client);
         ESP_LOGI(TAG, "Upload finished with status code: %d", code);
