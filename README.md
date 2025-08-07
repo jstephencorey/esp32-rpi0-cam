@@ -15,7 +15,11 @@ Make a .env file in the flask-api folder with IMMICH_API_KEY, IMMICH_UPLOAD_URL,
  - run `idf.py set-target esp32`
  - run `idf.py build`
  - then run `python -m esptool --chip esp32 -b 460800 --before default_reset --after hard_reset write_flash --flash_mode dio --flash_size 2MB --flash_freq 40m 0x1000 build\bootloader\bootloader.bin 0x8000 build\partition_table\partition-table.bin 0x10000 build\esp32-surveillence-cam.bin`
- - Monitor the logs with 
+ - Monitor the logs with `idf.py -p COM3 monitor` assuming you are on COM3
+ - Or build, flash and monitor with `idf.py -p COM3 flash monitor`
+
+#### Notes: 
+    You may need to increase the CONFIG_ESP_MAIN_TASK_STACK_SIZE in sdkconfig to 16384 (or change it in menuconfig)
 
 ### To set up the RPI zero 2 w:
 #### Setup the OS:

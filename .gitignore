@@ -1,8 +1,9 @@
 */.env
 */.vscode/
 *.vscode/
+*.venv/
 /esp32-code/build
-/esp32-code/sdkconfig
+/esp32-code/sdkconfig*
 /esp32-code/sketch/
 /esp32-code/managed_components/
 /esp32-code/main/secrets.h
