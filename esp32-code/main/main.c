@@ -7,6 +7,7 @@
 #include "camera.h"
 #include "uploader.h"
 #include "wifi.h"
+#include "uuid.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 
@@ -22,8 +23,10 @@ void app_main(void) {
     srand((unsigned int)esp_timer_get_time());
 
     // Generate a random directory name
-    char dir_name[32];
-    snprintf(dir_name, sizeof(dir_name), "/sdcard/c_%d", rand() % 10000);
+    char uuid_str[37];
+    get_uuid_str(uuid_str);
+    char dir_name[43];
+    snprintf(dir_name, sizeof(dir_name), "/sd/c_%s", uuid_str);
 
     esp_err_t res = create_directory(dir_name);
 
@@ -33,8 +36,8 @@ void app_main(void) {
         ESP_LOGE(TAG, "Failed to create directory");
     }
 
-    for (int i = 0; i<10; i++) {
-        char filepath[64];
+    for (int i = 0; i<20; i++) {
+        char filepath[75];
         snprintf(filepath, sizeof(filepath), "%s/PHOTO%d.JPG", dir_name, i);
         capture_and_save_photo(filepath);
         vTaskDelay(pdMS_TO_TICKS(100));

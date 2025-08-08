@@ -9,7 +9,7 @@
 
 #define TAG "UPLOADER"
 #define BOUNDARY "Esp32CamBoundary"
-#define MAX_IMAGES 64
+#define MAX_IMAGES 640
 
 static esp_err_t _http_event_handler(esp_http_client_event_t *evt) {
     return ESP_OK;
@@ -118,7 +118,7 @@ esp_err_t upload_photos_from_dir(const char *dir_path) {
         .url = UPLOAD_URL,
         .method = HTTP_METHOD_POST,
         .event_handler = _http_event_handler,
-        .timeout_ms = 60000,
+        .timeout_ms = 100000,
     };
 
     esp_http_client_handle_t client = esp_http_client_init(&config);

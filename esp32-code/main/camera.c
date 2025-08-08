@@ -49,7 +49,7 @@ esp_err_t init_camera(void) {
 
         .pixel_format   = PIXFORMAT_JPEG,
         .frame_size     = FRAMESIZE_QVGA,
-        .jpeg_quality   = 20,
+        .jpeg_quality   = 7,
         .fb_count       = 1,
         .fb_location    = CAMERA_FB_IN_DRAM
     };

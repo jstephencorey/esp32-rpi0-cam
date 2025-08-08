@@ -25,7 +25,7 @@ void init_sdcard(void) {
     };
 
     sdmmc_card_t *card;
-    const char mount_point[] = "/sdcard";
+    const char mount_point[] = "/sd";
 
     sdmmc_host_t host = SDMMC_HOST_DEFAULT();
     sdmmc_slot_config_t slot_config = SDMMC_SLOT_CONFIG_DEFAULT();
@@ -49,18 +49,18 @@ void init_sdcard(void) {
     sdmmc_card_print_info(stdout, card);
 
     struct stat st;
-    if (stat("/sdcard", &st) != 0) {
-        ESP_LOGE(TAG, "/sdcard does not exist or is not mounted");
+    if (stat("/sd", &st) != 0) {
+        ESP_LOGE(TAG, "/sd does not exist or is not mounted");
     } else {
-        ESP_LOGI(TAG, "/sdcard is mounted and ready");
+        ESP_LOGI(TAG, "/sd is mounted and ready");
     }
 }
 
 esp_err_t create_directory(const char *path) {
     ESP_LOGI(TAG, "Making directory: %s", path);
     struct stat st;
-    if (stat("/sdcard", &st) != 0) {
-        ESP_LOGE(TAG, "/sdcard not accessible before mkdir. errno=%d: %s", errno, strerror(errno));
+    if (stat("/sd", &st) != 0) {
+        ESP_LOGE(TAG, "/sd not accessible before mkdir. errno=%d: %s", errno, strerror(errno));
     }
 
     if (mkdir(path, 0777) == 0) {

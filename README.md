@@ -20,6 +20,7 @@ Make a .env file in the flask-api folder with IMMICH_API_KEY, IMMICH_UPLOAD_URL,
 
 #### Notes: 
     You may need to increase the CONFIG_ESP_MAIN_TASK_STACK_SIZE in sdkconfig to 16384 (or change it in menuconfig)
+    You also may need to change the FATFS settings through `idf.py menuconfig` then going to `Component config  →  FAT Filesystem` support and enabling long filename support on heap (or stack?)
 
 ### To set up the RPI zero 2 w:
 #### Setup the OS:
