@@ -40,11 +40,18 @@ void app_main(void) {
         char filepath[75];
         snprintf(filepath, sizeof(filepath), "%s/PHOTO%d.JPG", dir_name, i);
         capture_and_save_photo(filepath);
-        vTaskDelay(pdMS_TO_TICKS(100));
+        vTaskDelay(pdMS_TO_TICKS(90));
     }
 
     if (app_wifi_init_sta() == ESP_OK) {
-        upload_photos_from_dir(dir_name);
+        esp_err_t upload_result = upload_photos_from_dir(dir_name);
+
+        if (upload_result == ESP_OK) {
+            ESP_LOGI(TAG, "Upload successful!\n");
+            remove_directory(dir_name);
+        } else {
+            ESP_LOGE(TAG, "Upload failed: %s\n", esp_err_to_name(upload_result));
+        }
         app_wifi_deinit();
     } else {
         ESP_LOGE("MAIN", "Wi-Fi setup failed.");

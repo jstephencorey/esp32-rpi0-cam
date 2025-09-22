@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include <errno.h>
 #include <string.h>
+#include <dirent.h> 
+#include <unistd.h> 
 #include "esp_log.h"
 #include "esp_err.h"
 #include "esp_vfs_fat.h"
@@ -86,4 +88,37 @@ void write_text_file(const char *path, const char *text) {
     fprintf(f, "%s\n", text);
     fclose(f);
     printf("File written: %s\n", path);
+}
+
+esp_err_t remove_directory(const char *path) {
+    // First remove all files inside the directory
+    ESP_LOGI(TAG, "Deleting directory %s", path);
+    DIR *dir = opendir(path);
+    if (dir) {
+        struct dirent *entry;
+        char filepath[276];
+        while ((entry = readdir(dir)) != NULL) {
+            // Skip . and ..
+            if (strcmp(entry->d_name, ".") == 0 || strcmp(entry->d_name, "..") == 0) {
+                continue;
+            }
+
+            snprintf(filepath, sizeof(filepath), "%s/%s", path, entry->d_name);
+            ESP_LOGI(TAG, "Deleting file %s", filepath);
+            unlink(filepath); // delete file
+        }
+        closedir(dir);
+    }
+    else {
+        ESP_LOGE(TAG, "Unable to open directory for reading %s", path);
+    }
+
+    // Now remove the directory itself
+    if (rmdir(path) == 0) {
+        ESP_LOGI(TAG, "Directory deleted.");
+        return ESP_OK;
+    } else {
+        ESP_LOGE(TAG, "Failed to delete directory");
+        return ESP_FAIL;
+    }
 }
