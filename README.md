@@ -38,3 +38,25 @@ SSH into the rpi
 run the following two commands:
 `sudo apt update && sudo apt upgrade -y`
 `sudo apt install python3 python3-pip ffmpeg git -y`
+(optional:) `sudo apt install vim -y`
+
+#### Setup the wifi hotspot
+This will set up the RPI zero w 2 to be a constant hotspot, and have the endpoint start every time:
+`git clone <this repo>`
+`cd <this repo>`
+`sudo ./setup_pi_hotspot_api.sh`
+
+
+## Future plans:
+  - ESP32Cam code:
+    - Delete photos after successfully uploading them
+    - Upload in chunks?
+    - Background upload?/sensible handling of connection failures
+  - RPI zero 2 W:
+    - Run the flask endpoint
+    - Change the flask endpoint to save things locally first/as well. 
+    - Eventually:
+      - make own wifi signal for ESP32Cam to latch on to
+      - Save locally mostly
+      - Periodically switch to a different wifi (if available) to upload the videos to immich
+      - delete local videos upon success
