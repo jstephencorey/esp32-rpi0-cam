@@ -44,6 +44,7 @@ run the following two commands:
 This will set up the RPI zero w 2 to be a constant hotspot, and have the endpoint start every time:
 `git clone <this repo>`
 `cd <this repo>`
+chmod setup_pi_hotspot_api.sh
 `sudo ./setup_pi_hotspot_api.sh`
 
 
